@@ -28,11 +28,11 @@ export const Navbar = () => {
 
   return (
     <div
-      className={`sticky top-0 z-50 bg-white ${
-        scrollY > 10 ? "shadow-md" : ""
+      className={`sticky top-0 z-50 bg-black ${
+        scrollY > 10 ? "lg:bg-black/70 lg:backdrop-blur-xl shadow-md" : ""
       }`}
     >
-      <div className="p-4 bg-white text-black flex justify-between items-center max-w-[1400px] mx-auto w-[95%] relative">
+      <div className="p-4  text-black flex justify-between items-center max-w-[1400px] mx-auto w-[95%] relative">
         {/* Logo */}
         <Link className="text-xl font-bold text-[#9bd32c]" to={navRoutes.home}>
           Gemspot
@@ -44,7 +44,7 @@ export const Navbar = () => {
             <Link
               key={item.name}
               to={item.href}
-              className="text-gray-700 hover:text-[#7eaa25] px-3 py-2 text-sm font-medium"
+              className="text-gray-200 hover:text-[#9bd32c] px-3 py-2 text-sm font-medium transition-colors"
             >
               {item.name}
             </Link>
@@ -68,7 +68,7 @@ export const Navbar = () => {
         {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button
-            className="text-black text-2xl"
+            className="text-white text-2xl"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <LuX /> : <LuMenu />}
@@ -86,15 +86,15 @@ export const Navbar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-72 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
+        className={`fixed top-0 left-0 h-full w-full bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between p-4 border-b">
+        <div className="flex items-center justify-between p-4 ">
           <span className="font-bold text-[#9bd32c]">Gemspot</span>
           <button
             onClick={closeNav}
-            className="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-2 rounded-md hover:bg-gray-100  "
             aria-label="Close navigation"
           >
             <LuX className="h-5 w-5 text-gray-600" />
@@ -116,13 +116,17 @@ export const Navbar = () => {
             ))}
           </ul>
 
-          <div className="flex flex-col gap-4 items-center mt-4">
+          <div className="flex flex-col gap-4 mt-4">
             {!publicKey ? (
               <Button text="Connect Wallet" onClick={() => setVisible(true)} />
             ) : (
               <div className="">
                 <NavBtnOutline text="Dashboard" url={navRoutes.dashboard} />
-                <Button text="Disconnect Wallet" onClick={disconnect} className="mt-4"/>
+                <Button
+                  text="Disconnect Wallet"
+                  onClick={disconnect}
+                  className="mt-4"
+                />
               </div>
             )}
           </div>
