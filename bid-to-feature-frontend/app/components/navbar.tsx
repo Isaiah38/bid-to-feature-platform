@@ -29,10 +29,10 @@ export const Navbar = () => {
   return (
     <div
       className={`sticky top-0 z-50 bg-black ${
-        scrollY > 10 ? "lg:bg-black/70 lg:backdrop-blur-xl shadow-md" : ""
+        scrollY > 10 ? "bg-black/70 shadow-md" : ""
       }`}
     >
-      <div className="p-4  text-black flex justify-between items-center max-w-[1400px] mx-auto w-[95%] relative">
+      <div className="p-4  backdrop-blur-xl text-black flex justify-between items-center max-w-[1400px] mx-auto w-[95%] relative">
         {/* Logo */}
         <Link className="text-xl font-bold text-[#9bd32c]" to={navRoutes.home}>
           Gemspot
@@ -118,14 +118,14 @@ export const Navbar = () => {
 
           <div className="flex flex-col gap-4 mt-4">
             {!publicKey ? (
-              <Button text="Connect Wallet" onClick={() => setVisible(true)} />
+              <Button text="Connect Wallet" onClick={() => setVisible(true)} className="py-3" />
             ) : (
               <div className="">
-                <NavBtnOutline text="Dashboard" url={navRoutes.dashboard} />
+                <NavBtnOutline text="Dashboard" url={navRoutes.dashboard} className="py-3"/>
                 <Button
                   text="Disconnect Wallet"
                   onClick={disconnect}
-                  className="mt-4"
+                  className="mt-4 py-3"
                 />
               </div>
             )}
