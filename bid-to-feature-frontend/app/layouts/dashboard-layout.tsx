@@ -26,7 +26,7 @@ export default function DashboardLayout() {
   }, [publicKey]);
   return (
     <>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-white">
         <div className="grid lg:grid-cols-[280px_1fr]">
           <aside className="border-r border-gray-300 shadow-xs h-screen hidden lg:block ">
             <div className=" px-6 py-4 border-b border-gray-200 ">

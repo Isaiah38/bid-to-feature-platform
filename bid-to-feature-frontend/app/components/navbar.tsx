@@ -116,12 +116,12 @@ export const Navbar = () => {
             ))}
           </ul>
 
-          <div className="flex flex-col gap-4 mt-4">
+          <div className=" gap-4 mt-4">
             {!publicKey ? (
               <Button text="Connect Wallet" onClick={() => setVisible(true)} className="py-3" />
             ) : (
-              <div className="">
-                <NavBtnOutline text="Dashboard" url={navRoutes.dashboard} className="py-3"/>
+              <div className="flex flex-col">
+                <NavBtnOutline text="Dashboard" url={navRoutes.dashboard} className="py-3 text-center"/>
                 <Button
                   text="Disconnect Wallet"
                   onClick={disconnect}
