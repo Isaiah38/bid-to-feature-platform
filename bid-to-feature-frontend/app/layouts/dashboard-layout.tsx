@@ -33,6 +33,9 @@ export default function DashboardLayout() {
   const sidebarContent = (
     <>
       <div className="px-6 py-4 border-b border-gray-200">
+        <Link className="hidden lg:block text-xl font-bold text-[#9bd32c]" to={navRoutes.home}>
+          Gemspot
+        </Link>
         <div className="text-sm flex items-center gap-2 text-gray-700 ">
           <LuWallet className="h-4 w-4 text-gray-400" />
           {publicKey
