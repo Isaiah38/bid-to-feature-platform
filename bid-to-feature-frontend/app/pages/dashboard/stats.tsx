@@ -1,5 +1,7 @@
+import { useWallet } from "@solana/wallet-adapter-react";
 import { useEffect, useState } from "react";
 import { ButtonOutline } from "~/components/button";
+import useSmartContract from "~/hooks/useSmartContract";
 
 interface StatsDataProps {
   balance: number;
@@ -9,7 +11,8 @@ interface StatsDataProps {
 }
 
 export default function DashboardStats() {
-  const [isLoading, setIsLoading] = useState(true);
+  const { getSolBalance } = useSmartContract();
+  const { publicKey } = useWallet();
   const [stats, setStats] = useState<StatsDataProps>({
     balance: 0,
     new: 0,
@@ -27,7 +30,7 @@ export default function DashboardStats() {
   const info = [
     {
       id: 1,
-      value: stats.balance,
+      value: stats.balance.toFixed(4),
       label: "Sol Balance",
     },
     {
@@ -36,6 +39,21 @@ export default function DashboardStats() {
       label: "Bid Amount",
     },
   ];
+
+  const getStats = async () => {
+    if (publicKey) {
+      try {
+        const balance = await getSolBalance(publicKey.toString());
+        updateDataField({ balance });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getStats();
+  }, []);
 
   return (
     <div className="mt-4">
