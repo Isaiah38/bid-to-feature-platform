@@ -57,7 +57,7 @@ export const NavBtnOutline = ({
   return (
     <Link
       to={url}
-      className={`border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 hover:border-[#7eaa25] duration-100 transition cursor-pointer ${className}`}
+      className={`border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium  hover:border-[#7eaa25] duration-100 transition cursor-pointer ${className}`}
       type="submit"
     >
       {text}

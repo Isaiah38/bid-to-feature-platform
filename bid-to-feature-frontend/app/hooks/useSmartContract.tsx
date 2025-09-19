@@ -1,8 +1,5 @@
 import { createSolanaRpc, address } from "@solana/kit";
-
-const RPC_ENDPOINT =
-  "https://devnet.helius-rpc.com/?api-key=2a3fc6c2-631b-422c-8138-4db22f85ece0"; //"http://127.0.0.1:8899"
-
+import { envConfig } from "~/config/env";
 interface SmartContractHook {
   getSolBalance: (walletAddress: string) => Promise<number>;
 }
@@ -10,9 +7,8 @@ interface SmartContractHook {
 const useSmartContract = (): SmartContractHook => {
   const getSolBalance = async (wallet_address: string): Promise<number> => {
     try {
-      const rpc = createSolanaRpc(RPC_ENDPOINT);
+      const rpc = createSolanaRpc(envConfig.RPC_ENDPOINT);
       const result = await rpc.getBalance(address(wallet_address)).send();
-      console.log(result);
 
       const lamports = result.value;
 
