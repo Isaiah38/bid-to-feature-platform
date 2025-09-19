@@ -4,4 +4,4 @@
 # React Router
 /.react-router/
 
-.env
+*.env
