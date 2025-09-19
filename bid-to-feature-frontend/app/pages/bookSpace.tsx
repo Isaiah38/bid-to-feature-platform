@@ -93,7 +93,7 @@ export default function BookSpacePage() {
           <CountdownTimer
             startDate={startDate}
             endDate={endDate}
-            onComplete={() => alert("Auction ended!")}
+            onComplete={() => {}}
           />
 
           <ButtonOutline

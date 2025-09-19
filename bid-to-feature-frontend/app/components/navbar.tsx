@@ -53,12 +53,20 @@ export const Navbar = () => {
 
         {/* Desktop Buttons */}
         <div className="hidden md:block">
-          <div className="flex gap-4 items-center">
+          <div>
             {!publicKey ? (
-              <Button text="Connect Wallet" onClick={() => setVisible(true)} />
+              <Button
+                text="Connect Wallet"
+                onClick={() => setVisible(true)}
+                className="w-full"
+              />
             ) : (
               <div className="flex gap-4 items-center">
-                <NavBtnOutline text="Dashboard" url={navRoutes.dashboard} />
+                <NavBtnOutline
+                  text="Dashboard"
+                  url={navRoutes.dashboard}
+                  className="text-white"
+                />
                 <Button text="Disconnect Wallet" onClick={disconnect} />
               </div>
             )}
@@ -118,10 +126,18 @@ export const Navbar = () => {
 
           <div className=" gap-4 mt-4">
             {!publicKey ? (
-              <Button text="Connect Wallet" onClick={() => setVisible(true)} className="py-3" />
+              <Button
+                text="Connect Wallet"
+                onClick={() => setVisible(true)}
+                className="py-3 w-full"
+              />
             ) : (
               <div className="flex flex-col">
-                <NavBtnOutline text="Dashboard" url={navRoutes.dashboard} className="py-3 text-center"/>
+                <NavBtnOutline
+                  text="Dashboard"
+                  url={navRoutes.dashboard}
+                  className="py-3 text-center"
+                />
                 <Button
                   text="Disconnect Wallet"
                   onClick={disconnect}
