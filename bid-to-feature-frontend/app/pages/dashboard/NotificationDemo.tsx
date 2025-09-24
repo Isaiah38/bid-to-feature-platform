@@ -12,9 +12,11 @@ export const NotificationDemo = () => {
       <p className="text-sm text-gray-400 mb-4">
         Click these buttons to simulate the off-chain notification service.
       </p>
+
       <div className="flex flex-wrap gap-4">
         <button
-          onClick={() =>
+          onClick={
+            () =>
             addNotification(
               'Bid for portfolio space has started! Place your bids now',
               'info'
