@@ -13,7 +13,14 @@ export const NotificationDisplay = () => {
   useEffect(() => {
     const handleNewNotification = (notification: { message: string; type: 'success' | 'info' | 'warning' | 'error'; isTopBid: boolean }) => {
       addNotification(notification.message, notification.type);
-      addBid({ message: notification.message, isTopBid: notification.isTopBid });
+      addBid({
+        message: notification.message, isTopBid: notification.isTopBid,
+        ref_num: '',
+        category: '',
+        amount: 0,
+        status: 'Ongoing',
+        created_at: ''
+      });
     };
 
     socket.on('new_notification', handleNewNotification);
