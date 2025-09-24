@@ -20,6 +20,7 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { NotificationProvider } from './components/notification/use-notification';
 import { NotificationContainer } from './components/notification/NotificationContainer';
 import { BidHistoryProvider } from './hooks/useBidHistory';
+import { LiveFeedProvider } from './hooks/useLiveFeed';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -48,12 +49,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
-            <BidHistoryProvider>
-              <NotificationProvider>
-                <WalletModalProvider>{children}</WalletModalProvider>
-                <NotificationContainer />
-              </NotificationProvider>
-            </BidHistoryProvider>
+            <NotificationProvider>
+              <BidHistoryProvider>
+                <LiveFeedProvider>
+                  <WalletModalProvider>{children}</WalletModalProvider>
+                  <NotificationContainer />
+                </LiveFeedProvider>
+              </BidHistoryProvider>
+            </NotificationProvider>
           </WalletProvider>
         </ConnectionProvider>
         <ScrollRestoration />
