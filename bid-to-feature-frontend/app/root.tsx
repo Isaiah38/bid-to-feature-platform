@@ -15,7 +15,7 @@ import {
 } from '@solana/wallet-adapter-react';
 import { clusterApiUrl } from '@solana/web3.js';
 import '@solana/wallet-adapter-react-ui/styles.css';
-import { useMemo } from 'react';
+import React from 'react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { NotificationProvider } from './components/notification/use-notification';
 import { NotificationContainer } from './components/notification/NotificationContainer';
@@ -36,7 +36,7 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const endpoint = clusterApiUrl('devnet');
-  const wallets = useMemo(() => [], []);
+  const wallets = React.useMemo(() => [], []);
   return (
     <html lang="en">
       <head>
