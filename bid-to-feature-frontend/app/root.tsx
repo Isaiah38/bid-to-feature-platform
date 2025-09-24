@@ -36,6 +36,8 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const endpoint = clusterApiUrl("devnet");
+  const wallets = useMemo(() => [], []);
   return (
     <html lang="en">
       <head>
@@ -45,7 +47,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <NotificationProvider>
+              <WalletModalProvider>{children}</WalletModalProvider>
+              <NotificationContainer />
+            </NotificationProvider>
+          </WalletProvider>
+        </ConnectionProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -54,20 +63,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const endpoint = clusterApiUrl("devnet");
-  const wallets = useMemo(() => [], []);
-  return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <NotificationProvider>
-          <WalletModalProvider>
-            <Outlet />
-          </WalletModalProvider>
-          <NotificationContainer />
-        </NotificationProvider>
-      </WalletProvider>
-    </ConnectionProvider>
-  );
+  return <Outlet />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
