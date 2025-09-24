@@ -18,9 +18,9 @@ export const NotificationDisplay = () => {
         <h3 className="text-lg font-semibold text-black">Recent Bids</h3>
         <ul className="mt-2 space-y-2 text-sm text-gray-600">
           {feedEvents.length > 0 ? (
-            feedEvents.slice(0, 5).map((event, index) => (
+            feedEvents.slice(0, 5).map((event) => (
               <li 
-                key={index} 
+                key={event.id} 
                 className={`p-2 rounded-md flex items-center ${event.isTopBid ? 'bg-yellow-100' : 'bg-slate-50'}`}
               >
                 {event.message}

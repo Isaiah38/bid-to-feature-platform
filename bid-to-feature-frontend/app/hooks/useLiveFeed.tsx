@@ -3,6 +3,8 @@ import {
   useContext,
   useState,
   useEffect,
+  useRef,
+  useId,
   type ReactNode,
 } from 'react';
 import io, { Socket } from 'socket.io-client';
@@ -35,6 +37,8 @@ export const useLiveFeed = () => {
 export const LiveFeedProvider = ({ children }: { children: ReactNode }) => {
   const [feedEvents, setFeedEvents] = useState<LiveFeedEvent[]>([]);
   const { addNotification } = useNotification();
+  const eventCounter = useRef(0);
+  const idPrefix = useId();
 
   useEffect(() => {
     const socket: Socket = io('ws://localhost:3000');
@@ -59,13 +63,42 @@ export const LiveFeedProvider = ({ children }: { children: ReactNode }) => {
       addNotification(notification.message, type);
 
       const newFeedEvent: LiveFeedEvent = {
-        id: new Date().getTime().toString(),
+        id: `${idPrefix}-${eventCounter.current++}`,
         message: notification.message,
         isTopBid: notification.isTopBid || false,
         timestamp: new Date().toISOString(),
       };
 
-      setFeedEvents((prevEvents) => [newFeedEvent, ...prevEvents]);
+      setFeedEvents((prevEvents) => {
+        let updatedEvents = [...prevEvents];
+
+        if (newFeedEvent.isTopBid) {
+          updatedEvents = updatedEvents.map((event) => {
+            if (event.isTopBid) {
+              return {
+                ...event,
+                isTopBid: false,
+                message: event.message.replace(
+                  '🏆 New Top Bid!',
+                  '⚡️ New Bid!'
+                ),
+              };
+            }
+            return event;
+          });
+          updatedEvents.unshift(newFeedEvent);
+        } else {
+          const topBidIndex = updatedEvents.findIndex(
+            (event) => event.isTopBid
+          );
+          if (topBidIndex !== -1) {
+            updatedEvents.splice(topBidIndex + 1, 0, newFeedEvent);
+          } else {
+            updatedEvents.unshift(newFeedEvent);
+          }
+        }
+        return updatedEvents;
+      });
     });
 
     socket.on('disconnect', () => {
@@ -75,7 +108,7 @@ export const LiveFeedProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       socket.disconnect();
     };
-  }, [addNotification]);
+  }, [addNotification, idPrefix]);
 
   return (
     <LiveFeedContext.Provider value={{ feedEvents }}>
