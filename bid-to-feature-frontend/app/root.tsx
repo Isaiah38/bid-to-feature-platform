@@ -19,6 +19,8 @@ import { useMemo } from "react";
 import {
   WalletModalProvider,
 } from "@solana/wallet-adapter-react-ui";
+import { NotificationProvider } from "./components/notification/use-notification";
+import { NotificationContainer } from "./components/notification/NotificationContainer";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -57,9 +59,12 @@ export default function App() {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          <Outlet />
-        </WalletModalProvider>
+        <NotificationProvider>
+          <WalletModalProvider>
+            <Outlet />
+          </WalletModalProvider>
+          <NotificationContainer />
+        </NotificationProvider>
       </WalletProvider>
     </ConnectionProvider>
   );

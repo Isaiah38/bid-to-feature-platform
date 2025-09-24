@@ -9,8 +9,8 @@ export default function AppLayout() {
     <NotificationProvider>
       <Navbar />
       <Outlet />
-      <Footer />
       <NotificationContainer />
+      <Footer />
     </NotificationProvider>
   );
 }
