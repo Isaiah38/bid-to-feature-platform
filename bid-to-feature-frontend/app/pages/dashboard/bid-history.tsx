@@ -4,9 +4,7 @@ import SectionLoaderLayout from '~/components/loader/section/layout';
 import { NoResultFound } from '~/components/message';
 import { LoadingState } from '~/utils/enum';
 import { format } from 'date-fns';
-import { ButtonOutline } from '~/components/button';
 import IncreaseBid from './increaseBid';
-import { fi } from 'date-fns/locale';
 
 const generateRefNum = () => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
