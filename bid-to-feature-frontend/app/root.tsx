@@ -50,12 +50,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
             <NotificationProvider>
-              <BidHistoryProvider>
-                <LiveFeedProvider>
+                <BidHistoryProvider>
                   <WalletModalProvider>{children}</WalletModalProvider>
                   <NotificationContainer />
-                </LiveFeedProvider>
-              </BidHistoryProvider>
+                </BidHistoryProvider>
             </NotificationProvider>
           </WalletProvider>
         </ConnectionProvider>
