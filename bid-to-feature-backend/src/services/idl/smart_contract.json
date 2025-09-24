@@ -1,0 +1,347 @@
+{
+  "address": "A4tegPx6662aYdJANarfVQufCwtWcELiGtR56KhqogR9",
+  "metadata": {
+    "name": "smart_contract",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "initialize_feature",
+      "discriminator": [
+        115,
+        121,
+        35,
+        69,
+        133,
+        118,
+        199,
+        117
+      ],
+      "accounts": [
+        {
+          "name": "feature",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "docs": [
+            "PDA escrow account to hold SOL"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "feature"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "min_bid",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdraw",
+      "discriminator": [
+        183,
+        18,
+        70,
+        156,
+        148,
+        109,
+        161,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "bidder",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "bid_account"
+          ]
+        },
+        {
+          "name": "feature",
+          "writable": true,
+          "relations": [
+            "bid_account"
+          ]
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "feature"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bid_account",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "BidAccount",
+      "discriminator": [
+        27,
+        161,
+        15,
+        114,
+        230,
+        126,
+        56,
+        104
+      ]
+    },
+    {
+      "name": "Feature",
+      "discriminator": [
+        48,
+        203,
+        3,
+        19,
+        16,
+        41,
+        248,
+        199
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "NewTopBidders",
+      "discriminator": [
+        121,
+        74,
+        109,
+        86,
+        73,
+        10,
+        148,
+        2
+      ]
+    },
+    {
+      "name": "WithdrawalAllowed",
+      "discriminator": [
+        91,
+        10,
+        218,
+        165,
+        87,
+        254,
+        212,
+        12
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "BidTooSmall",
+      "msg": "Bid is too small"
+    },
+    {
+      "code": 6001,
+      "name": "StillInTop3",
+      "msg": "You cannot withdraw while still in Top 3"
+    },
+    {
+      "code": 6002,
+      "name": "NoBidFound",
+      "msg": "No bid found for this bidder"
+    },
+    {
+      "code": 6003,
+      "name": "AlreadyWithdrawn",
+      "msg": "Bid already withdrawn"
+    },
+    {
+      "code": 6004,
+      "name": "BiddingStillActive",
+      "msg": "Bidding still active"
+    },
+    {
+      "code": 6005,
+      "name": "BiddingEnded",
+      "msg": "Bidding has ended"
+    },
+    {
+      "code": 6006,
+      "name": "Overflow",
+      "msg": "Overflow when adding bid amounts"
+    },
+    {
+      "code": 6007,
+      "name": "Unauthorized",
+      "msg": "Unauthorized / mismatch"
+    },
+    {
+      "code": 6008,
+      "name": "FeatureMismatch",
+      "msg": "BidAccount does not belong to this feature"
+    }
+  ],
+  "types": [
+    {
+      "name": "BidAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bidder",
+            "type": "pubkey"
+          },
+          {
+            "name": "feature",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "withdrawn",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BidderEntry",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bid_section_id",
+            "type": "u8"
+          },
+          {
+            "name": "pubkey",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Feature",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "min_bid",
+            "type": "u64"
+          },
+          {
+            "name": "end_time",
+            "type": "i64"
+          },
+          {
+            "name": "bidders",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "BidderEntry"
+                }
+              }
+            }
+          },
+          {
+            "name": "escrow_bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NewTopBidders",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bidders",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "BidderEntry"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "WithdrawalAllowed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bidder",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}
