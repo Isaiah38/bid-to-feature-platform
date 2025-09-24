@@ -53,7 +53,7 @@ export default function BidHistory() {
       ];
 
       setItems(dummyData);
-      // setIsLoading(LoadingState.RESOLVED);
+      setIsLoading(LoadingState.RESOLVED);
     } catch (e) {
       console.error(e);
     } finally {
