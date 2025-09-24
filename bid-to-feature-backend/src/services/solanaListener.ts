@@ -32,7 +32,6 @@ export const listenToEvents = (io: Server) => {
     console.log('🚀 Mock Solana event listener started.');
     setInterval(() => {
       const currentTopAmount = getTopBidder()?.amount || 10;
-      // Generate a random bid that could be higher or lower than the current top bid.
       const newAmount = currentTopAmount + (Math.random() * 10 - 4); 
       
       const mockEventData = {
@@ -40,7 +39,7 @@ export const listenToEvents = (io: Server) => {
         amount: newAmount > 0 ? newAmount : 1, // Ensure bid is positive
       };
       processBidEvent(io, mockEventData);
-    }, 10000); // Fire every 10 seconds
+    }, 10000);
   } else {
     try {
       const connection = new Connection(SOLANA_RPC_URL, 'confirmed');

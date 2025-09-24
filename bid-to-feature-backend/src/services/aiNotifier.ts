@@ -1,5 +1,3 @@
-// src/services/aiNotifier.ts
-
 export enum NotificationType {
   Start = 'Start',
   MidDay = 'Mid-day',

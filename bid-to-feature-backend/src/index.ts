@@ -22,7 +22,6 @@ app.get('/', (req, res) => {
   res.send('AI Off-chain Notification Service is running!');
 });
 
-// API Endpoint for Testing
 app.get('/trigger-notifications', (req, res) => {
   console.log('--- Manually Triggering Notifications via API ---');
 
