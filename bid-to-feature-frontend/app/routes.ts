@@ -12,6 +12,7 @@ export default [
     ...prefix("dashboard", [
       index("routes/dashboard.tsx"),
       route("book-space", "routes/bookSpace.tsx"),
+      route("full-history", "pages/dashboard/full-bid-history.tsx"),
     ]),
   ]),
   route("/*", "pages/page404.tsx"),
