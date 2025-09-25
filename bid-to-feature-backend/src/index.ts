@@ -4,6 +4,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import { generateNotification, NotificationType } from './services/aiNotifier';
 import { listenToEvents } from './services/solanaListener';
+import { startAiHeartbeat } from './services/aiHeartbeat';
 
 const app = express();
 const server = http.createServer(app);
@@ -51,4 +52,5 @@ io.on('connection', (socket) => {
 server.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
   listenToEvents(io);
+  startAiHeartbeat(io);
 });
