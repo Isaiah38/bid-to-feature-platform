@@ -4,8 +4,7 @@ import { getBiddingState, setTopBidder } from './biddingState';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { Program, AnchorProvider } from '@project-serum/anchor';
 import idl from './idl/smart_contract.json';
-
-const USE_MOCK_LISTENER = true;
+import config from '../config';
 
 const SOLANA_RPC_URL = 'https://api.devnet.solana.com';
 const PROGRAM_ID = new PublicKey('A4tegPx6662aYdJANarfVQufCwtWcELiGtR56KhogR9');
@@ -31,7 +30,7 @@ const processBidEvent = async (io: Server, newBidData: { pubkey: string, amount:
 };
 
 export const listenToEvents = (io: Server) => {
-  if (USE_MOCK_LISTENER) {
+  if (config.useMockListener) {
     console.log('🚀 Mock Solana event listener started.');
     setInterval(() => {
       const state = getBiddingState();
