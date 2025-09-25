@@ -1,3 +1,5 @@
+import config from '../config';
+
 interface Bidder {
   pubkey: string;
   amount: number;
@@ -10,14 +12,13 @@ interface BiddingState {
   isBiddingActive: boolean;
 }
 
-// Initialize the state
-const AUCTION_DURATION_MINUTES = 5;
+
 const now = Date.now();
 
 const state: BiddingState = {
   topBidder: null,
   auctionStartTime: now,
-  auctionEndTime: now + AUCTION_DURATION_MINUTES * 60 * 1000,
+  auctionEndTime: now + config.auctionDurationMinutes * 60 * 1000,
   isBiddingActive: true,
 };
 
