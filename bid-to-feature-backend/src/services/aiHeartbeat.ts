@@ -1,8 +1,6 @@
 import { Server } from 'socket.io';
 import { generateNotification, NotificationType } from './aiNotifier';
 import { getBiddingState, endBidding } from './biddingState';
-
-// This object tracks which heartbeat notifications have been sent to avoid duplicates.
 const sentNotifications = {
   start: false,
   midway: false,
@@ -12,10 +10,10 @@ const sentNotifications = {
 const startAiHeartbeat = (io: Server) => {
   console.log('🧠 AI Heartbeat service started. Monitoring auction state...');
 
-  setInterval(() => {
+  setInterval(async () => { 
     const state = getBiddingState();
     if (!state.isBiddingActive) {
-      return;
+      return; 
     }
 
     const now = Date.now();
@@ -25,7 +23,7 @@ const startAiHeartbeat = (io: Server) => {
 
     // 1. Bidding Start Notification
     if (!sentNotifications.start) {
-      const message = generateNotification(NotificationType.Start, {});
+      const message = await generateNotification(NotificationType.Start, {});
       console.log(`[Heartbeat] Emitting: "${message}"`);
       io.emit('new_notification', { type: 'success', message });
       sentNotifications.start = true;
@@ -33,7 +31,7 @@ const startAiHeartbeat = (io: Server) => {
 
     // 2. Mid-day/Halfway Notification
     if (now >= halfwayPoint && !sentNotifications.midway) {
-      const message = generateNotification(NotificationType.MidDay, {});
+      const message = await generateNotification(NotificationType.MidDay, {});
       console.log(`[Heartbeat] Emitting: "${message}"`);
       io.emit('new_notification', { type: 'info', message });
       sentNotifications.midway = true;
@@ -42,7 +40,7 @@ const startAiHeartbeat = (io: Server) => {
     // 3. "Ending Soon" Notification (e.g., 5 minutes left)
     // Note: For a 5-minute auction, this will trigger almost immediately after the halfway point.
     if (now >= fiveMinutesBeforeEnd && !sentNotifications.endingSoon) {
-      const message = generateNotification(NotificationType.End, {});
+      const message = await generateNotification(NotificationType.End, {});
       console.log(`[Heartbeat] Emitting: "${message}"`);
       io.emit('new_notification', { type: 'warning', message });
       sentNotifications.endingSoon = true;
@@ -53,7 +51,7 @@ const startAiHeartbeat = (io: Server) => {
       endBidding();
       // Optional: could emit a final "Bidding Ended" message here.
     }
-  }, 5000);
+  }, 5000); // Check the state every 5 seconds
 };
 
 export { startAiHeartbeat };

@@ -8,9 +8,9 @@ import idl from './idl/smart_contract.json';
 const USE_MOCK_LISTENER = true;
 
 const SOLANA_RPC_URL = 'https://api.devnet.solana.com';
-const PROGRAM_ID = new PublicKey('A4tegPx6662aYdJANarfVQufCwtWcELiGtR56KhqogR9');
+const PROGRAM_ID = new PublicKey('A4tegPx6662aYdJANarfVQufCwtWcELiGtR56KhogR9');
 
-const processBidEvent = (io: Server, newBidData: { pubkey: string, amount: number }) => {
+const processBidEvent = async (io: Server, newBidData: { pubkey: string, amount: number }) => {
   const { topBidder: previousTopBidder, isBiddingActive } = getBiddingState();
 
   if (!isBiddingActive) {
@@ -20,11 +20,11 @@ const processBidEvent = (io: Server, newBidData: { pubkey: string, amount: numbe
 
   if (!previousTopBidder || newBidData.amount > previousTopBidder.amount) {
     setTopBidder(newBidData);
-    const message = generateNotification(NotificationType.NewTopBid, { bidder: newBidData.pubkey, amount: newBidData.amount });
+    const message = await generateNotification(NotificationType.NewTopBid, { bidder: newBidData.pubkey, amount: newBidData.amount });
     console.log(`[Logic] Emitting New Top Bid: "${message}"`);
     io.emit('new_notification', { type: 'info', message, isTopBid: true });
   } else {
-    const message = generateNotification(NotificationType.NewBidActivity, { bidder: newBidData.pubkey, amount: newBidData.amount });
+    const message = await generateNotification(NotificationType.NewBidActivity, { bidder: newBidData.pubkey, amount: newBidData.amount });
     console.log(`[Logic] Emitting New Bid Activity: "${message}"`);
     io.emit('new_notification', { type: 'info', message, isTopBid: false });
   }
