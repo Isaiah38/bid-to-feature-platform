@@ -1,16 +1,26 @@
 import { Link } from 'react-router';
 import { useLiveFeed } from '~/hooks/useLiveFeed';
+import { LuExternalLink } from 'react-icons/lu';
+import { navRoutes } from '~/utils/constants';
 
 export const NotificationDisplay = () => {
   const { feedEvents } = useLiveFeed();
 
   return (
     <div className="border border-slate-200 p-4 mt-8 rounded-xl bg-white">
-      <h2 className="text-xl font-bold font-sans text-black pb-4">
-        Live Bidding Activity
-      </h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-bold font-sans text-black">
+          Live Bidding Activity
+        </h2>
+        <Link
+          to={navRoutes.fullBidHistory}
+          className="flex items-center gap-2 text-blue-600 hover:underline"
+        >
+          View All History <LuExternalLink />
+        </Link>
+      </div>
 
-      <p className="text-sm text-gray-400 mb-4">
+      <p className="text-sm text-gray-400 my-4">
         Watching for on-chain events... New bid notifications will appear here in real-time.
       </p>
 
@@ -30,16 +40,6 @@ export const NotificationDisplay = () => {
             <p className="text-gray-400">No new bids yet...</p>
           )}
         </ul>
-        {feedEvents.length > 5 && (
-          <div className="mt-4 text-center">
-            <Link 
-              to="/dashboard/full-history"
-              className="text-sm font-medium text-blue-600 hover:underline"
-            >
-              View all history
-            </Link>
-          </div>
-        )}
       </div>
     </div>
   );
