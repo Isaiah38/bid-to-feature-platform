@@ -54,8 +54,23 @@ export const LiveFeedProvider = ({ children }: { children: ReactNode }) => {
       console.log('Live Feed WebSocket connected');
     });
 
-    socket.on('bidding_ended', (data: { winner: Winner }) => {
-      setWinner(data.winner);
+    socket.on('bidding_ended', (winner: Winner) => {
+      setWinner(winner);
+      const winnerMessage = winner
+        ? `🎉 Bidding ended! Winner: ${winner.pubkey.slice(
+            0,
+            4
+          )}...${winner.pubkey.slice(-4)}`
+        : '🎉 Bidding ended! No winner was decided.';
+
+      const newFeedEvent: LiveFeedEvent = {
+        id: `${idPrefix}-${eventCounter.current++}`,
+        message: winnerMessage,
+        isTopBid: true,
+        timestamp: new Date().toISOString(),
+      };
+
+      setFeedEvents((prevEvents) => [newFeedEvent, ...prevEvents]);
     });
 
     socket.on('new_notification', (notification: any) => {
