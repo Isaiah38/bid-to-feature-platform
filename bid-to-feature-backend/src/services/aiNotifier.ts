@@ -11,10 +11,11 @@ export enum NotificationType {
   End = 'End',
   NewTopBid = 'NewTopBid',
   NewBidActivity = 'NewBidActivity',
+  BiddingEnded = 'BiddingEnded',
 }
 
 const getStaticNotification = (type: NotificationType, data: any): string => {
-  const bidderShort = data.bidder ? `${data.bidder.slice(0, 4)}...${data.bidder.slice(-4)}` : 'Someone';
+  const bidderShort = data.bidder ? `User ${data.bidder.slice(0, 4)}...${data.bidder.slice(-4)}` : 'Someone';
   const amountFormatted = data.amount ? parseFloat(data.amount).toFixed(2) : 'a certain amount';
 
   switch (type) {
@@ -28,6 +29,8 @@ const getStaticNotification = (type: NotificationType, data: any): string => {
       return `🏆 New Top Bid! ${bidderShort} is now in the lead with ${amountFormatted} SOL.`;
     case NotificationType.NewBidActivity:
       return `⚡️ New Bid! ${bidderShort} just placed a bid of ${amountFormatted} SOL.`;
+    case NotificationType.BiddingEnded:
+      return `🎉 Bidding has ended! The winner is ${bidderShort} with a bid of ${amountFormatted} SOL.`;
     default:
       return 'New event received.';
   }
