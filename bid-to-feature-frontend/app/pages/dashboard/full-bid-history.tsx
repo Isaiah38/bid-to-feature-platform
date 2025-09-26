@@ -1,34 +1,54 @@
-import { useBidHistory } from '~/hooks/useBidHistory';
+import { useBidHistory, BidHistoryProvider } from '~/hooks/useBidHistory';
+import { LiveFeedProvider } from '~/hooks/useLiveFeed';
+import ClickToCopy from '~/components/ClickToCopy';
+import PaginatedTable from '~/components/table/PaginatedTable';
+import { format, isValid } from 'date-fns';
 
-export const FullBidHistoryPage = () => {
+const BidHistoryContent = () => {
   const { bidHistory } = useBidHistory();
+
+  const headers = ['User', 'Amount(SOL)', 'Date'];
+  const data = bidHistory.map((bid) => {
+    const date = new Date(bid.timestamp);
+    const formattedDate = isValid(date)
+      ? format(date, 'E, MMM d, yyyy, h:mm a')
+      : '--';
+
+    return [
+      <ClickToCopy text={bid.bidder} />,
+      <span className="font-bold">
+        <span className="text-black">{bid.amount.toFixed(2)}</span> SOL
+      </span>,
+      <span className="text-slate-600">{formattedDate}</span>,
+    ];
+  });
 
   return (
     <div className="p-4 md:p-8">
       <div className="border border-slate-200 p-4 mt-8 rounded-xl bg-white">
-        <h2 className="text-xl font-bold font-sans text-black pb-4">
+        <h2 className="text-2xl font-bold font-sans text-black pb-4">
           Full Bidding History
         </h2>
-        <ul className="mt-2 space-y-2 text-sm text-gray-600">
+        <div className="mt-4">
           {bidHistory.length > 0 ? (
-            bidHistory.map((bid, index) => (
-              <li 
-                key={index} 
-                className="p-2 rounded-md flex items-center bg-slate-50"
-              >
-                <span className="font-bold">{bid.bidder}</span>
-                <span className="ml-2">bid</span>
-                <span className="font-bold ml-1">{bid.amount} SOL</span>
-                <span className="ml-auto text-xs text-gray-400">
-                  {new Date(bid.timestamp).toLocaleString()}
-                </span>
-              </li>
-            ))
+            <PaginatedTable headers={headers} data={data} />
           ) : (
-            <p className="text-gray-400">No bidding history found.</p>
+            <p className="text-gray-500 text-center py-8">
+              No bidding history found.
+            </p>
           )}
-        </ul>
+        </div>
       </div>
     </div>
   );
 };
+
+export default function FullBidHistoryPage() {
+  return (
+    <LiveFeedProvider>
+      <BidHistoryProvider>
+        <BidHistoryContent />
+      </BidHistoryProvider>
+    </LiveFeedProvider>
+  );
+}
