@@ -16,17 +16,27 @@ import { navRoutes } from "~/utils/constants";
 import { useEffect, useState } from "react";
 import CopyToClipBoard from "~/components/copyToClipBoard";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLiveFeed } from "~/hooks/useLiveFeed";
+import WinnerModal from "~/components/modals/winnerModal";
 
 export default function DashboardLayout() {
   const { publicKey, disconnect } = useWallet();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { winner } = useLiveFeed();
+  const [showWinnerModal, setShowWinnerModal] = useState(false);
 
   useEffect(() => {
-    if (!publicKey) {
-      navigate(navRoutes.home);
+    if (winner) {
+      setShowWinnerModal(true);
     }
+  }, [winner]);
+
+  useEffect(() => {
+    // if (!publicKey) {
+    //   navigate(navRoutes.home);
+    // }
     setMobileOpen(false);
   }, [publicKey, location]);
 
@@ -72,6 +82,9 @@ export default function DashboardLayout() {
 
   return (
     <div className="min-h-screen bg-white">
+      {showWinnerModal && winner && (
+        <WinnerModal winner={winner} onClose={() => setShowWinnerModal(false)} />
+      )}
       <div className="grid lg:grid-cols-[280px_1fr]">
         {/* Desktop Sidebar */}
         <aside className="border-r border-gray-300 shadow-xs h-screen hidden lg:block">
