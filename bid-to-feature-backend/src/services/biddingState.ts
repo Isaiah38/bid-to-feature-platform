@@ -34,5 +34,4 @@ export const setTopBidder = (bidder: Bidder) => {
 
 export const endBidding = () => {
   state.isBiddingActive = false;
-  console.log('Bidding has officially ended.');
 };
