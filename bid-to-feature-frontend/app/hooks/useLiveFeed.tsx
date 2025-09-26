@@ -18,8 +18,14 @@ export interface LiveFeedEvent {
   timestamp: string;
 }
 
+interface Winner {
+  pubkey: string;
+  amount: number;
+}
+
 interface LiveFeedContextType {
   feedEvents: LiveFeedEvent[];
+  winner: Winner | null;
 }
 
 const LiveFeedContext = createContext<LiveFeedContextType | undefined>(
@@ -36,6 +42,7 @@ export const useLiveFeed = () => {
 
 export const LiveFeedProvider = ({ children }: { children: ReactNode }) => {
   const [feedEvents, setFeedEvents] = useState<LiveFeedEvent[]>([]);
+  const [winner, setWinner] = useState<Winner | null>(null);
   const { addNotification } = useNotification();
   const eventCounter = useRef(0);
   const idPrefix = useId();
@@ -45,6 +52,10 @@ export const LiveFeedProvider = ({ children }: { children: ReactNode }) => {
 
     socket.on('connect', () => {
       console.log('Live Feed WebSocket connected');
+    });
+
+    socket.on('bidding_ended', (data: { winner: Winner }) => {
+      setWinner(data.winner);
     });
 
     socket.on('new_notification', (notification: any) => {
@@ -111,7 +122,7 @@ export const LiveFeedProvider = ({ children }: { children: ReactNode }) => {
   }, [addNotification, idPrefix]);
 
   return (
-    <LiveFeedContext.Provider value={{ feedEvents }}>
+    <LiveFeedContext.Provider value={{ feedEvents, winner }}>
       {children}
     </LiveFeedContext.Provider>
   );
