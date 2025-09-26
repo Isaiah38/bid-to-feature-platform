@@ -1,6 +1,7 @@
 import { Server } from 'socket.io';
 import { generateNotification, NotificationType } from './aiNotifier';
 import { getBiddingState, setTopBidder } from './biddingState';
+import { appendToHistory } from './biddingHistory';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { Program, AnchorProvider } from '@project-serum/anchor';
 import idl from './idl/smart_contract.json';
@@ -9,22 +10,34 @@ import config from '../config';
 const SOLANA_RPC_URL = 'https://api.devnet.solana.com';
 const PROGRAM_ID = new PublicKey('A4tegPx6662aYdJANarfVQufCwtWcELiGtR56KhogR9');
 
+const generateFakePubkey = () => {
+  const chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  let result = '';
+  for (let i = 0; i < 44; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+};
+
 const processBidEvent = async (io: Server, newBidData: { pubkey: string, amount: number }) => {
   const { topBidder: previousTopBidder, isBiddingActive } = getBiddingState();
 
   if (!isBiddingActive) {
-    console.log('[Logic] Ignoring new bid event: Bidding has ended.');
     return;
   }
+
+  appendToHistory({
+    bidder: newBidData.pubkey,
+    amount: newBidData.amount,
+    timestamp: Date.now(),
+  });
 
   if (!previousTopBidder || newBidData.amount > previousTopBidder.amount) {
     setTopBidder(newBidData);
     const message = await generateNotification(NotificationType.NewTopBid, { bidder: newBidData.pubkey, amount: newBidData.amount });
-    console.log(`[Logic] Emitting New Top Bid: "${message}"`);
     io.emit('new_notification', { type: 'info', message, isTopBid: true });
   } else {
     const message = await generateNotification(NotificationType.NewBidActivity, { bidder: newBidData.pubkey, amount: newBidData.amount });
-    console.log(`[Logic] Emitting New Bid Activity: "${message}"`);
     io.emit('new_notification', { type: 'info', message, isTopBid: false });
   }
 };
@@ -40,12 +53,13 @@ export const listenToEvents = (io: Server) => {
       const newAmount = currentTopAmount + (Math.random() * 10 - 4); 
       
       const mockEventData = {
-        pubkey: `User...${Math.random().toString(36).substring(2, 7)}`,
+        pubkey: generateFakePubkey(),
         amount: newAmount > 0 ? newAmount : 1,
       };
       processBidEvent(io, mockEventData);
     }, 10000);
-  } else {
+  }
+  else {
     try {
       const connection = new Connection(SOLANA_RPC_URL, 'confirmed');
       const provider = new AnchorProvider(connection, { signTransaction: () => Promise.reject(), signAllTransactions: () => Promise.reject(), publicKey: PublicKey.default }, {});
