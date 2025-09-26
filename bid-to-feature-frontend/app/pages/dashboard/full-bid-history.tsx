@@ -1,5 +1,4 @@
 import { useBidHistory } from '~/hooks/useBidHistory';
-import { FaTrophy } from 'react-icons/fa';
 
 export const FullBidHistoryPage = () => {
   const { bidHistory } = useBidHistory();
@@ -15,9 +14,14 @@ export const FullBidHistoryPage = () => {
             bidHistory.map((bid, index) => (
               <li 
                 key={index} 
-                className={`p-2 rounded-md flex items-center ${bid.isTopBid ? 'bg-yellow-100' : 'bg-slate-50'}`}
+                className="p-2 rounded-md flex items-center bg-slate-50"
               >
-                {bid.message}
+                <span className="font-bold">{bid.bidder}</span>
+                <span className="ml-2">bid</span>
+                <span className="font-bold ml-1">{bid.amount} SOL</span>
+                <span className="ml-auto text-xs text-gray-400">
+                  {new Date(bid.timestamp).toLocaleString()}
+                </span>
               </li>
             ))
           ) : (
