@@ -1,2 +1,4 @@
 node_modules/
-.envbidding-history.json
+.env
+bidding-history.json
+.env
