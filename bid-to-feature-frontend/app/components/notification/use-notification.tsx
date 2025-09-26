@@ -25,10 +25,14 @@ interface NotificationProviderProps {
 export const NotificationProvider: FC<NotificationProviderProps> = ({ children }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  function addNotification(message: string, type: NotificationType, duration?: number) {
+  function addNotification(message: string, type: NotificationType, duration: number = 5000) {
     const id = `${new Date().getTime()}`;
     const newNotification: Notification = { id, message, type, duration };
     setNotifications(currentNotifications => [...currentNotifications, newNotification]);
+
+    setTimeout(() => {
+      removeNotification(id);
+    }, duration);
   }
 
   function removeNotification(id: string) {
