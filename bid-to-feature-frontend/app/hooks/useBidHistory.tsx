@@ -1,12 +1,9 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
-
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 export interface Bid {
-  ref_num: string;
-  category: string;
+  bidder: string;
   amount: number;
-  status: 'Ongoing' | 'Ended' | 'Outbid' | 'Top Bid';
-  created_at: string; 
+  timestamp: number;
 }
 
 interface BidHistoryContextType {
@@ -24,9 +21,21 @@ export const useBidHistory = () => {
 };
 
 export const BidHistoryProvider = ({ children }: { children: ReactNode }) => {
-  // This state will hold the user's personal bid history.
-  // For now, it's empty, but it can be populated from an API call.
   const [bidHistory, setBidHistory] = useState<Bid[]>([]);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/history');
+        const data = await response.json();
+        setBidHistory(data);
+      } catch (error) {
+        console.error('Failed to fetch bid history:', error);
+      }
+    };
+
+    fetchHistory();
+  }, []);
 
   return (
     <BidHistoryContext.Provider value={{ bidHistory }}>
