@@ -41,9 +41,9 @@ export default function DashboardLayout() {
   }, []);
 
   useEffect(() => {
-    // if (!publicKey) {
-    //   navigate(navRoutes.home);
-    // }
+    if (!publicKey) {
+      navigate(navRoutes.home);
+    }
     setMobileOpen(false);
   }, [publicKey, location]);
 
