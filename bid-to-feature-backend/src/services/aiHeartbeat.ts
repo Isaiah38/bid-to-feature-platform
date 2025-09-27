@@ -11,6 +11,35 @@ const startAiHeartbeat = (io: Server) => {
   };
   console.log('🧠 AI Heartbeat service started. Monitoring auction state...');
 
+  const state = getBiddingState();
+
+  const scheduleAuctionEnd = () => {
+    const now = Date.now();
+    const timeUntilEnd = state.auctionEndTime - now;
+
+    if (timeUntilEnd > 0) {
+      setTimeout(async () => {
+        if (getBiddingState().isBiddingActive) {
+          endBidding();
+          const winner = getBiddingState().topBidder;
+          const message = await generateNotification(
+            NotificationType.BiddingEnded,
+            {
+              bidder: winner?.pubkey,
+              amount: winner?.amount,
+            }
+          );
+          io.emit('bidding_ended', winner);
+          io.emit('new_notification', { type: 'success', message });
+          sentNotifications.ended = true;
+          console.log('Bidding ended. Winner notification sent.');
+        }
+      }, timeUntilEnd);
+    }
+  };
+
+  scheduleAuctionEnd();
+
   setInterval(async () => {
     const state = getBiddingState();
     if (!state.isBiddingActive) {
@@ -38,21 +67,6 @@ const startAiHeartbeat = (io: Server) => {
       const message = await generateNotification(NotificationType.End, {});
       io.emit('new_notification', { type: 'warning', message });
       sentNotifications.endingSoon = true;
-    }
-
-    if (now >= state.auctionEndTime && !sentNotifications.ended) {
-      endBidding();
-      const winner = state.topBidder;
-      const message = await generateNotification(
-        NotificationType.BiddingEnded,
-        {
-          bidder: winner?.pubkey,
-          amount: winner?.amount,
-        }
-      );
-      io.emit('bidding_ended', winner);
-      io.emit('new_notification', { type: 'success', message });
-      sentNotifications.ended = true;
     }
   }, 5000);
 };
