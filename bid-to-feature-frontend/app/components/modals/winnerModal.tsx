@@ -34,12 +34,12 @@ const WinnerModal: React.FC<WinnerModalProps> = ({ winner, onClose }) => {
         <div className="absolute -top-16 left-1/2 -translate-x-1/2 text-8xl">
           🏆
         </div>
-        <h2 className="text-2xl font-bold mb-4 mt-12">Bidding Ended!</h2>
-        <p className="text-lg">The winner is:</p>
+        <h2 className="text-8xl text-green-500 font-bold mb-4 mt-12">WINNER!!!</h2>
+        <p className="text-lg text-black">The winner is:</p>
         <p className="text-xl font-bold text-yellow-500">
           User {winner.pubkey}
         </p>
-        <p className="text-lg">with a bid of</p>
+        <p className="text-lg text-black">with a bid of</p>
         <p className="text-xl font-bold text-yellow-500">{winner.amount} SOL</p>
       </motion.div>
     </motion.div>
