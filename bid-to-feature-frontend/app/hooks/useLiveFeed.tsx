@@ -41,19 +41,22 @@ export const useLiveFeed = () => {
 };
 
 export const LiveFeedProvider = ({ children }: { children: ReactNode }) => {
-  const [feedEvents, setFeedEvents] = useState<LiveFeedEvent[]>(() => {
-    try {
-      const storedEvents = sessionStorage.getItem('feedEvents');
-      return storedEvents ? JSON.parse(storedEvents) : [];
-    } catch (error) {
-      console.error('Error reading from sessionStorage:', error);
-      return [];
-    }
-  });
+  const [feedEvents, setFeedEvents] = useState<LiveFeedEvent[]>([]);
   const [winner, setWinner] = useState<Winner | null>(null);
   const { addNotification } = useNotification();
   const eventCounter = useRef(0);
   const idPrefix = useId();
+
+  useEffect(() => {
+    try {
+      const storedEvents = sessionStorage.getItem('feedEvents');
+      if (storedEvents) {
+        setFeedEvents(JSON.parse(storedEvents));
+      }
+    } catch (error) {
+      console.error('Error reading from sessionStorage:', error);
+    }
+  }, []);
 
   useEffect(() => {
     try {
