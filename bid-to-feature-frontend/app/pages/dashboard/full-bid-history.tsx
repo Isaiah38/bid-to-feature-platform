@@ -1,5 +1,4 @@
 import { useBidHistory, BidHistoryProvider } from '~/hooks/useBidHistory';
-import { LiveFeedProvider } from '~/hooks/useLiveFeed';
 import ClickToCopy from '~/components/ClickToCopy';
 import PaginatedTable from '~/components/table/PaginatedTable';
 import { format, isValid } from 'date-fns';
@@ -45,10 +44,8 @@ const BidHistoryContent = () => {
 
 export default function FullBidHistoryPage() {
   return (
-    <LiveFeedProvider>
-      <BidHistoryProvider>
-        <BidHistoryContent />
-      </BidHistoryProvider>
-    </LiveFeedProvider>
+    <BidHistoryProvider>
+      <BidHistoryContent />
+    </BidHistoryProvider>
   );
 }
