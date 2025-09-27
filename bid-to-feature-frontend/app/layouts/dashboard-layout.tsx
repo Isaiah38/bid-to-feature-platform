@@ -1,5 +1,3 @@
-import { Navbar } from "../components/navbar";
-import Footer from "../components/footer";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import {
   LuLayoutDashboard,
@@ -32,6 +30,15 @@ export default function DashboardLayout() {
       setShowWinnerModal(true);
     }
   }, [winner]);
+
+  useEffect(() => {
+    const checkWinner = () => {
+      if (winner) {
+        setShowWinnerModal(true);
+      }
+    };
+    checkWinner();
+  }, []);
 
   useEffect(() => {
     // if (!publicKey) {
