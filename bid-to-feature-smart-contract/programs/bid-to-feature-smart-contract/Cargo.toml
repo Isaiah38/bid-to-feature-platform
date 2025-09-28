@@ -1,12 +1,12 @@
 [package]
-name = "smart-contract"
+name = "bid-to-feature-smart-contract"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "smart_contract"
+name = "bid_to_feature_smart_contract"
 
 [features]
 default = []
