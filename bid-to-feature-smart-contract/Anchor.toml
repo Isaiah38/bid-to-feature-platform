@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-smart_contract = "A4tegPx6662aYdJANarfVQufCwtWcELiGtR56KhqogR9"
+bid_to_feature_smart_contract = "2EjhzjMZGBKJsEPDAqYALCcsWn12knJGydCso1YpAGBf"
 
 [registry]
 url = "https://api.apr.dev"
