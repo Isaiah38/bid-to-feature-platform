@@ -9,6 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
     "@solana/kit": "^3.0.3",
