@@ -1,13 +1,11 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useEffect, useState } from "react";
 import { ButtonOutline } from "~/components/button";
-import useSmartContract from "~/hooks/useSmartContract";
+import useSmartContract from "~/hooks/solana/useSmartContract";
 
 interface StatsDataProps {
   balance: number;
-  new: number;
-  read: number;
-  replied: number;
+  bid_amount: number;
 }
 
 export default function DashboardStats() {
@@ -15,9 +13,7 @@ export default function DashboardStats() {
   const { publicKey } = useWallet();
   const [stats, setStats] = useState<StatsDataProps>({
     balance: 0,
-    new: 0,
-    read: 0,
-    replied: 0,
+    bid_amount: 0,
   });
 
   const updateDataField = (updates: Partial<StatsDataProps>) => {
@@ -35,7 +31,7 @@ export default function DashboardStats() {
     },
     {
       id: 2,
-      value: stats.new,
+      value: stats.bid_amount,
       label: "Bid Amount",
     },
   ];
