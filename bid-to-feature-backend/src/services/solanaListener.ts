@@ -8,7 +8,7 @@ import idl from './idl/smart_contract.json';
 import config from '../config';
 
 const SOLANA_RPC_URL = 'https://api.devnet.solana.com';
-const PROGRAM_ID = new PublicKey('A4tegPx6662aYdJANarfVQufCwtWcELiGtR56KhogR9');
+const PROGRAM_ID = new PublicKey('2EjhzjMZGBKJsEPDAqYALCcsWn12knJGydCso1YpAGBf');
 
 const generateFakePubkey = () => {
   const chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
