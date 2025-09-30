@@ -19,14 +19,51 @@ pub mod smart_contract {
 
     //TODO: Olayiwola
 
-    //place_bid(){
+// pub fn place_bid(ctx: &Context<PlaceBid>, amount: u64) -> Result<()> {
+//     let feature = &mut ctx.accounts.feature;
+//     let bidder = &ctx.accounts.bidder;
+    
+//     // Check if bidding has ended
+//     let clock = Clock::get()?;
+//     require!(
+//         clock.unix_timestamp <= feature.end_time,
+//         FeatureError::BiddingEnded
+//     );
+    
+//     // Check if bid meets minimum requirement
+//     require!(
+//         amount >= feature.min_bid,
+//         FeatureError::BidTooSmall
+//     );
+    
+//     // Transfer SOL from bidder to escrow PDA
+//     let transfer_ix = system_instruction::transfer(
+//         &bidder.key(),
+//         &ctx.accounts.escrow.key(),
+//         amount,
+//     );
+    
+//     anchor_lang::solana_program::program::invoke(
+//         &transfer_ix,
+//         &[
+//             bidder.to_account_info(),
+//             ctx.accounts.escrow.to_account_info(),
+//             ctx.accounts.system_program.to_account_info(),
+//         ],
+//     )?;
+    
+//     // Update or create bid account
+//     let bid_account = &mut ctx.accounts.bid_account;
+//     bid_account.bidder = bidder.key();
+//     bid_account.feature = feature.key();
+//     bid_account.amount = bid_account.amount.checked_add(amount).ok_or(FeatureError::Overflow)?;
+//     bid_account.withdrawn = false;
+    
+//     // TODO: Add logic to update top 3 bidders in feature.bidders
+    
+//     Ok(())
+// }
 
-    // transfer SOL from bidder to escrow PDA
-
-    // record bid
-
-    //Ok(())
-    //}
 
     pub fn withdraw(ctx: Context<Withdraw>) -> Result<()> {
         let feature = &mut ctx.accounts.feature;
@@ -104,10 +141,23 @@ pub struct InitializeFeature<'info> {
 pub struct PlaceBid<'info> {
     #[account(mut)]
     pub bidder: Signer<'info>,
+    
     #[account(mut)]
     pub feature: Account<'info, Feature>,
+    
     #[account(mut, seeds = [b"escrow", feature.key().as_ref()], bump)]
     pub escrow: AccountInfo<'info>,
+    
+    // Add this to track individual bids
+    #[account(
+        init_if_needed,
+        payer = bidder,
+        space = 8 + BidAccount::LEN,
+        seeds = [b"bid", feature.key().as_ref(), bidder.key().as_ref()],
+        bump
+    )]
+    pub bid_account: Account<'info, BidAccount>,
+    
     pub system_program: Program<'info, System>,
 }
 
