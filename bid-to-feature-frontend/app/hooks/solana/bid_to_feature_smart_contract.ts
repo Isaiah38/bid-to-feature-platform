@@ -5,103 +5,493 @@
  * IDL can be found at `target/idl/bid_to_feature_smart_contract.json`.
  */
 export type BidToFeatureSmartContract = {
-  "address": "2EjhzjMZGBKJsEPDAqYALCcsWn12knJGydCso1YpAGBf",
-  "metadata": {
-    "name": "bidToFeatureSmartContract",
-    "version": "0.1.0",
-    "spec": "0.1.0",
-    "description": "Created with Anchor"
-  },
-  "instructions": [
+  address: '2EjhzjMZGBKJsEPDAqYALCcsWn12knJGydCso1YpAGBf';
+  metadata: {
+    name: 'bid_to_feature_smart_contract';
+    version: '0.1.0';
+    spec: '0.1.0';
+    description: 'Created with Anchor';
+  };
+  instructions: [
     {
-      "name": "initialize",
-      "discriminator": [
-        175,
-        175,
-        109,
-        31,
-        13,
-        152,
-        155,
-        237
-      ],
-      "accounts": [
+      name: 'close_bid';
+      discriminator: [169, 171, 66, 115, 220, 168, 231, 21];
+      accounts: [
         {
-          "name": "initializer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "escrowAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: 'temp_category';
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "value": [
+                kind: 'const';
+                value: [
+                  102,
                   101,
-                  115,
-                  99,
+                  97,
+                  116,
+                  117,
                   114,
+                  101,
+                  100,
+                  95,
+                  99,
+                  97,
+                  116,
+                  101,
+                  103,
                   111,
-                  119
-                ]
+                  114,
+                  121,
+                ];
               },
               {
-                "kind": "account",
-                "path": "initializer"
-              }
-            ]
-          }
+                kind: 'arg';
+                path: 'category_name';
+              },
+            ];
+          };
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": [
+          name: 'main_category';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'const';
+                value: [
+                  102,
+                  101,
+                  97,
+                  116,
+                  117,
+                  114,
+                  101,
+                  100,
+                  95,
+                  99,
+                  97,
+                  116,
+                  101,
+                  103,
+                  111,
+                  114,
+                  121,
+                ];
+              },
+              {
+                kind: 'arg';
+                path: 'base_name';
+              },
+            ];
+          };
+        },
         {
-          "name": "amount",
-          "type": "u64"
-        }
-      ]
-    }
-  ],
-  "accounts": [
+          name: 'bidder_1';
+          writable: true;
+        },
+        {
+          name: 'bidder_2';
+          writable: true;
+        },
+        {
+          name: 'bidder_3';
+          writable: true;
+        },
+        {
+          name: 'authority';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'system_program';
+          address: '11111111111111111111111111111111';
+        },
+      ];
+      args: [
+        {
+          name: '_category_name';
+          type: 'string';
+        },
+        {
+          name: '_base_name';
+          type: 'string';
+        },
+      ];
+    },
     {
-      "name": "escrowAccount",
-      "discriminator": [
-        36,
-        69,
-        48,
-        18,
-        128,
-        225,
-        125,
-        135
-      ]
-    }
-  ],
-  "types": [
+      name: 'create_category';
+      discriminator: [220, 242, 238, 47, 228, 219, 223, 230];
+      accounts: [
+        {
+          name: 'featured_category';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'const';
+                value: [
+                  102,
+                  101,
+                  97,
+                  116,
+                  117,
+                  114,
+                  101,
+                  100,
+                  95,
+                  99,
+                  97,
+                  116,
+                  101,
+                  103,
+                  111,
+                  114,
+                  121,
+                ];
+              },
+              {
+                kind: 'arg';
+                path: 'name';
+              },
+            ];
+          };
+        },
+        {
+          name: 'authority';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'system_program';
+          address: '11111111111111111111111111111111';
+        },
+      ];
+      args: [
+        {
+          name: 'name';
+          type: 'string';
+        },
+      ];
+    },
     {
-      "name": "escrowAccount",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: 'get_bidder_balance';
+      discriminator: [165, 73, 231, 106, 100, 119, 240, 169];
+      accounts: [
+        {
+          name: 'bidder_account';
+          writable: true;
+        },
+        {
+          name: 'authority';
+          signer: true;
+        },
+      ];
+      args: [];
+      returns: 'u64';
+    },
+    {
+      name: 'initialize';
+      discriminator: [175, 175, 109, 31, 13, 152, 155, 237];
+      accounts: [
+        {
+          name: 'initializer';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'escrow_account';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'const';
+                value: [101, 115, 99, 114, 111, 119];
+              },
+              {
+                kind: 'account';
+                path: 'initializer';
+              },
+            ];
+          };
+        },
+        {
+          name: 'system_program';
+          address: '11111111111111111111111111111111';
+        },
+      ];
+      args: [
+        {
+          name: 'amount';
+          type: 'u64';
+        },
+      ];
+    },
+    {
+      name: 'place_bid';
+      discriminator: [238, 77, 148, 91, 200, 151, 92, 146];
+      accounts: [
+        {
+          name: 'bidder';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'bidder_account';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'const';
+                value: [
+                  98,
+                  105,
+                  100,
+                  100,
+                  101,
+                  114,
+                  95,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                ];
+              },
+              {
+                kind: 'account';
+                path: 'bidder';
+              },
+            ];
+          };
+        },
+        {
+          name: 'featured_category';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'const';
+                value: [
+                  102,
+                  101,
+                  97,
+                  116,
+                  117,
+                  114,
+                  101,
+                  100,
+                  95,
+                  99,
+                  97,
+                  116,
+                  101,
+                  103,
+                  111,
+                  114,
+                  121,
+                ];
+              },
+              {
+                kind: 'arg';
+                path: 'category_name';
+              },
+            ];
+          };
+        },
+        {
+          name: 'system_program';
+          address: '11111111111111111111111111111111';
+        },
+      ];
+      args: [
+        {
+          name: 'category_name';
+          type: 'string';
+        },
+        {
+          name: 'amount';
+          type: 'u64';
+        },
+      ];
+    },
+    {
+      name: 'withdraw';
+      discriminator: [183, 18, 70, 156, 148, 109, 161, 34];
+      accounts: [
+        {
+          name: 'bidder';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'bidder_account';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'const';
+                value: [
+                  98,
+                  105,
+                  100,
+                  100,
+                  101,
+                  114,
+                  95,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                ];
+              },
+              {
+                kind: 'account';
+                path: 'bidder';
+              },
+            ];
+          };
+        },
+        {
+          name: 'system_program';
+          address: '11111111111111111111111111111111';
+        },
+      ];
+      args: [
+        {
+          name: 'amount';
+          type: 'u64';
+        },
+      ];
+    },
+  ];
+  accounts: [
+    {
+      name: 'BidderAccount';
+      discriminator: [147, 36, 226, 65, 101, 184, 70, 222];
+    },
+    {
+      name: 'EscrowAccount';
+      discriminator: [36, 69, 48, 18, 128, 225, 125, 135];
+    },
+    {
+      name: 'FeaturedCategory';
+      discriminator: [197, 214, 229, 14, 202, 212, 106, 126];
+    },
+  ];
+  errors: [
+    {
+      code: 6000;
+      name: 'InsufficientBalance';
+      msg: 'Insufficient Balance';
+    },
+    {
+      code: 6001;
+      name: 'InvalidBidder';
+      msg: 'Invalid Bidder';
+    },
+    {
+      code: 6002;
+      name: 'InvalidAmount';
+      msg: 'Invalid Amount';
+    },
+    {
+      code: 6003;
+      name: 'InvalidCategoryName';
+      msg: 'Invalid Category Name';
+    },
+    {
+      code: 6004;
+      name: 'Unauthorized';
+      msg: 'Unauthorized';
+    },
+  ];
+  types: [
+    {
+      name: 'Bid';
+      type: {
+        kind: 'struct';
+        fields: [
           {
-            "name": "initializer",
-            "type": "pubkey"
+            name: 'bidder';
+            type: 'pubkey';
           },
           {
-            "name": "amount",
-            "type": "u64"
+            name: 'category';
+            type: 'string';
           },
           {
-            "name": "isActive",
-            "type": "bool"
-          }
-        ]
-      }
-    }
-  ]
+            name: 'amount';
+            type: 'u64';
+          },
+        ];
+      };
+    },
+    {
+      name: 'BidderAccount';
+      type: {
+        kind: 'struct';
+        fields: [
+          {
+            name: 'owner';
+            type: 'pubkey';
+          },
+          {
+            name: 'amount';
+            type: 'u64';
+          },
+        ];
+      };
+    },
+    {
+      name: 'EscrowAccount';
+      type: {
+        kind: 'struct';
+        fields: [
+          {
+            name: 'initializer';
+            type: 'pubkey';
+          },
+          {
+            name: 'amount';
+            type: 'u64';
+          },
+          {
+            name: 'is_active';
+            type: 'bool';
+          },
+        ];
+      };
+    },
+    {
+      name: 'FeaturedCategory';
+      type: {
+        kind: 'struct';
+        fields: [
+          {
+            name: 'authority';
+            type: 'pubkey';
+          },
+          {
+            name: 'name';
+            type: 'string';
+          },
+          {
+            name: 'top_3_bids';
+            type: {
+              vec: {
+                defined: {
+                  name: 'Bid';
+                };
+              };
+            };
+          },
+        ];
+      };
+    },
+  ];
 };

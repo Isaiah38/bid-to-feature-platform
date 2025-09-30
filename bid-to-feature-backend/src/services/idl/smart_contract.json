@@ -1,52 +1,106 @@
 {
-  "address": "A4tegPx6662aYdJANarfVQufCwtWcELiGtR56KhqogR9",
+  "address": "2EjhzjMZGBKJsEPDAqYALCcsWn12knJGydCso1YpAGBf",
   "metadata": {
-    "name": "smart_contract",
+    "name": "bid_to_feature_smart_contract",
     "version": "0.1.0",
     "spec": "0.1.0",
     "description": "Created with Anchor"
   },
   "instructions": [
     {
-      "name": "initialize_feature",
-      "discriminator": [
-        115,
-        121,
-        35,
-        69,
-        133,
-        118,
-        199,
-        117
-      ],
+      "name": "close_bid",
+      "discriminator": [169, 171, 66, 115, 220, 168, 231, 21],
       "accounts": [
         {
-          "name": "feature",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "escrow",
-          "docs": [
-            "PDA escrow account to hold SOL"
-          ],
+          "name": "temp_category",
           "writable": true,
           "pda": {
             "seeds": [
               {
                 "kind": "const",
                 "value": [
-                  101,
-                  115,
-                  99,
-                  114,
-                  111,
-                  119
+                  102, 101, 97, 116, 117, 114, 101, 100, 95, 99, 97, 116, 101,
+                  103, 111, 114, 121
                 ]
               },
               {
-                "kind": "account",
-                "path": "feature"
+                "kind": "arg",
+                "path": "category_name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "main_category",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102, 101, 97, 116, 117, 114, 101, 100, 95, 99, 97, 116, 101,
+                  103, 111, 114, 121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "base_name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bidder_1",
+          "writable": true
+        },
+        {
+          "name": "bidder_2",
+          "writable": true
+        },
+        {
+          "name": "bidder_3",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_category_name",
+          "type": "string"
+        },
+        {
+          "name": "_base_name",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "create_category",
+      "discriminator": [220, 242, 238, 47, 228, 219, 223, 230],
+      "accounts": [
+        {
+          "name": "featured_category",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102, 101, 97, 116, 117, 114, 101, 100, 95, 99, 97, 116, 101,
+                  103, 111, 114, 121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "name"
               }
             ]
           }
@@ -63,180 +117,212 @@
       ],
       "args": [
         {
-          "name": "min_bid",
-          "type": "u64"
+          "name": "name",
+          "type": "string"
         }
       ]
     },
     {
-      "name": "withdraw",
-      "discriminator": [
-        183,
-        18,
-        70,
-        156,
-        148,
-        109,
-        161,
-        34
-      ],
+      "name": "get_bidder_balance",
+      "discriminator": [165, 73, 231, 106, 100, 119, 240, 169],
       "accounts": [
         {
-          "name": "bidder",
-          "writable": true,
-          "signer": true,
-          "relations": [
-            "bid_account"
-          ]
+          "name": "bidder_account",
+          "writable": true
         },
         {
-          "name": "feature",
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [],
+      "returns": "u64"
+    },
+    {
+      "name": "initialize",
+      "discriminator": [175, 175, 109, 31, 13, 152, 155, 237],
+      "accounts": [
+        {
+          "name": "initializer",
           "writable": true,
-          "relations": [
-            "bid_account"
-          ]
+          "signer": true
         },
         {
-          "name": "escrow",
+          "name": "escrow_account",
           "writable": true,
           "pda": {
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  101,
-                  115,
-                  99,
-                  114,
-                  111,
-                  119
-                ]
+                "value": [101, 115, 99, 114, 111, 119]
               },
               {
                 "kind": "account",
-                "path": "feature"
+                "path": "initializer"
               }
             ]
           }
-        },
-        {
-          "name": "bid_account",
-          "writable": true
         },
         {
           "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "place_bid",
+      "discriminator": [238, 77, 148, 91, 200, 151, 92, 146],
+      "accounts": [
+        {
+          "name": "bidder",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "bidder_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98, 105, 100, 100, 101, 114, 95, 97, 99, 99, 111, 117, 110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bidder"
+              }
+            ]
+          }
+        },
+        {
+          "name": "featured_category",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102, 101, 97, 116, 117, 114, 101, 100, 95, 99, 97, 116, 101,
+                  103, 111, 114, 121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "category_name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "category_name",
+          "type": "string"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdraw",
+      "discriminator": [183, 18, 70, 156, 148, 109, 161, 34],
+      "accounts": [
+        {
+          "name": "bidder",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "bidder_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98, 105, 100, 100, 101, 114, 95, 97, 99, 99, 111, 117, 110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bidder"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
     }
   ],
   "accounts": [
     {
-      "name": "BidAccount",
-      "discriminator": [
-        27,
-        161,
-        15,
-        114,
-        230,
-        126,
-        56,
-        104
-      ]
+      "name": "BidderAccount",
+      "discriminator": [147, 36, 226, 65, 101, 184, 70, 222]
     },
     {
-      "name": "Feature",
-      "discriminator": [
-        48,
-        203,
-        3,
-        19,
-        16,
-        41,
-        248,
-        199
-      ]
-    }
-  ],
-  "events": [
-    {
-      "name": "NewTopBidders",
-      "discriminator": [
-        121,
-        74,
-        109,
-        86,
-        73,
-        10,
-        148,
-        2
-      ]
+      "name": "EscrowAccount",
+      "discriminator": [36, 69, 48, 18, 128, 225, 125, 135]
     },
     {
-      "name": "WithdrawalAllowed",
-      "discriminator": [
-        91,
-        10,
-        218,
-        165,
-        87,
-        254,
-        212,
-        12
-      ]
+      "name": "FeaturedCategory",
+      "discriminator": [197, 214, 229, 14, 202, 212, 106, 126]
     }
   ],
   "errors": [
     {
       "code": 6000,
-      "name": "BidTooSmall",
-      "msg": "Bid is too small"
+      "name": "InsufficientBalance",
+      "msg": "Insufficient Balance"
     },
     {
       "code": 6001,
-      "name": "StillInTop3",
-      "msg": "You cannot withdraw while still in Top 3"
+      "name": "InvalidBidder",
+      "msg": "Invalid Bidder"
     },
     {
       "code": 6002,
-      "name": "NoBidFound",
-      "msg": "No bid found for this bidder"
+      "name": "InvalidAmount",
+      "msg": "Invalid Amount"
     },
     {
       "code": 6003,
-      "name": "AlreadyWithdrawn",
-      "msg": "Bid already withdrawn"
+      "name": "InvalidCategoryName",
+      "msg": "Invalid Category Name"
     },
     {
       "code": 6004,
-      "name": "BiddingStillActive",
-      "msg": "Bidding still active"
-    },
-    {
-      "code": 6005,
-      "name": "BiddingEnded",
-      "msg": "Bidding has ended"
-    },
-    {
-      "code": 6006,
-      "name": "Overflow",
-      "msg": "Overflow when adding bid amounts"
-    },
-    {
-      "code": 6007,
       "name": "Unauthorized",
-      "msg": "Unauthorized / mismatch"
-    },
-    {
-      "code": 6008,
-      "name": "FeatureMismatch",
-      "msg": "BidAccount does not belong to this feature"
+      "msg": "Unauthorized"
     }
   ],
   "types": [
     {
-      "name": "BidAccount",
+      "name": "Bid",
       "type": {
         "kind": "struct",
         "fields": [
@@ -245,7 +331,39 @@
             "type": "pubkey"
           },
           {
-            "name": "feature",
+            "name": "category",
+            "type": "string"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BidderAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EscrowAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "initializer",
             "type": "pubkey"
           },
           {
@@ -253,92 +371,34 @@
             "type": "u64"
           },
           {
-            "name": "withdrawn",
+            "name": "is_active",
             "type": "bool"
           }
         ]
       }
     },
     {
-      "name": "BidderEntry",
+      "name": "FeaturedCategory",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "bid_section_id",
-            "type": "u8"
-          },
-          {
-            "name": "pubkey",
+            "name": "authority",
             "type": "pubkey"
           },
           {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Feature",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "min_bid",
-            "type": "u64"
+            "name": "name",
+            "type": "string"
           },
           {
-            "name": "end_time",
-            "type": "i64"
-          },
-          {
-            "name": "bidders",
+            "name": "top_3_bids",
             "type": {
               "vec": {
                 "defined": {
-                  "name": "BidderEntry"
+                  "name": "Bid"
                 }
               }
             }
-          },
-          {
-            "name": "escrow_bump",
-            "type": "u8"
-          }
-        ]
-      }
-    },
-    {
-      "name": "NewTopBidders",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "bidders",
-            "type": {
-              "vec": {
-                "defined": {
-                  "name": "BidderEntry"
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "WithdrawalAllowed",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "bidder",
-            "type": "pubkey"
-          },
-          {
-            "name": "amount",
-            "type": "u64"
           }
         ]
       }
