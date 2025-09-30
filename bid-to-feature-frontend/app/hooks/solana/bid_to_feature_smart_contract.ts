@@ -7,18 +7,18 @@
 export type BidToFeatureSmartContract = {
   address: '2EjhzjMZGBKJsEPDAqYALCcsWn12knJGydCso1YpAGBf';
   metadata: {
-    name: 'bid_to_feature_smart_contract';
+    name: 'bidToFeatureSmartContract';
     version: '0.1.0';
     spec: '0.1.0';
     description: 'Created with Anchor';
   };
   instructions: [
     {
-      name: 'close_bid';
+      name: 'closeBid';
       discriminator: [169, 171, 66, 115, 220, 168, 231, 21];
       accounts: [
         {
-          name: 'temp_category';
+          name: 'tempCategory';
           writable: true;
           pda: {
             seeds: [
@@ -46,13 +46,13 @@ export type BidToFeatureSmartContract = {
               },
               {
                 kind: 'arg';
-                path: 'category_name';
+                path: 'categoryName';
               },
             ];
           };
         },
         {
-          name: 'main_category';
+          name: 'mainCategory';
           writable: true;
           pda: {
             seeds: [
@@ -80,21 +80,21 @@ export type BidToFeatureSmartContract = {
               },
               {
                 kind: 'arg';
-                path: 'base_name';
+                path: 'baseName';
               },
             ];
           };
         },
         {
-          name: 'bidder_1';
+          name: 'bidder1';
           writable: true;
         },
         {
-          name: 'bidder_2';
+          name: 'bidder2';
           writable: true;
         },
         {
-          name: 'bidder_3';
+          name: 'bidder3';
           writable: true;
         },
         {
@@ -103,27 +103,27 @@ export type BidToFeatureSmartContract = {
           signer: true;
         },
         {
-          name: 'system_program';
+          name: 'systemProgram';
           address: '11111111111111111111111111111111';
         },
       ];
       args: [
         {
-          name: '_category_name';
+          name: 'categoryName';
           type: 'string';
         },
         {
-          name: '_base_name';
+          name: 'baseName';
           type: 'string';
         },
       ];
     },
     {
-      name: 'create_category';
+      name: 'createCategory';
       discriminator: [220, 242, 238, 47, 228, 219, 223, 230];
       accounts: [
         {
-          name: 'featured_category';
+          name: 'featuredCategory';
           writable: true;
           pda: {
             seeds: [
@@ -162,7 +162,7 @@ export type BidToFeatureSmartContract = {
           signer: true;
         },
         {
-          name: 'system_program';
+          name: 'systemProgram';
           address: '11111111111111111111111111111111';
         },
       ];
@@ -174,11 +174,11 @@ export type BidToFeatureSmartContract = {
       ];
     },
     {
-      name: 'get_bidder_balance';
+      name: 'getBidderBalance';
       discriminator: [165, 73, 231, 106, 100, 119, 240, 169];
       accounts: [
         {
-          name: 'bidder_account';
+          name: 'bidderAccount';
           writable: true;
         },
         {
@@ -199,7 +199,7 @@ export type BidToFeatureSmartContract = {
           signer: true;
         },
         {
-          name: 'escrow_account';
+          name: 'escrowAccount';
           writable: true;
           pda: {
             seeds: [
@@ -215,7 +215,7 @@ export type BidToFeatureSmartContract = {
           };
         },
         {
-          name: 'system_program';
+          name: 'systemProgram';
           address: '11111111111111111111111111111111';
         },
       ];
@@ -227,7 +227,7 @@ export type BidToFeatureSmartContract = {
       ];
     },
     {
-      name: 'place_bid';
+      name: 'placeBid';
       discriminator: [238, 77, 148, 91, 200, 151, 92, 146];
       accounts: [
         {
@@ -236,7 +236,7 @@ export type BidToFeatureSmartContract = {
           signer: true;
         },
         {
-          name: 'bidder_account';
+          name: 'bidderAccount';
           writable: true;
           pda: {
             seeds: [
@@ -267,7 +267,7 @@ export type BidToFeatureSmartContract = {
           };
         },
         {
-          name: 'featured_category';
+          name: 'featuredCategory';
           writable: true;
           pda: {
             seeds: [
@@ -295,19 +295,19 @@ export type BidToFeatureSmartContract = {
               },
               {
                 kind: 'arg';
-                path: 'category_name';
+                path: 'categoryName';
               },
             ];
           };
         },
         {
-          name: 'system_program';
+          name: 'systemProgram';
           address: '11111111111111111111111111111111';
         },
       ];
       args: [
         {
-          name: 'category_name';
+          name: 'categoryName';
           type: 'string';
         },
         {
@@ -326,7 +326,7 @@ export type BidToFeatureSmartContract = {
           signer: true;
         },
         {
-          name: 'bidder_account';
+          name: 'bidderAccount';
           writable: true;
           pda: {
             seeds: [
@@ -357,7 +357,7 @@ export type BidToFeatureSmartContract = {
           };
         },
         {
-          name: 'system_program';
+          name: 'systemProgram';
           address: '11111111111111111111111111111111';
         },
       ];
@@ -371,48 +371,48 @@ export type BidToFeatureSmartContract = {
   ];
   accounts: [
     {
-      name: 'BidderAccount';
+      name: 'bidderAccount';
       discriminator: [147, 36, 226, 65, 101, 184, 70, 222];
     },
     {
-      name: 'EscrowAccount';
+      name: 'escrowAccount';
       discriminator: [36, 69, 48, 18, 128, 225, 125, 135];
     },
     {
-      name: 'FeaturedCategory';
+      name: 'featuredCategory';
       discriminator: [197, 214, 229, 14, 202, 212, 106, 126];
     },
   ];
   errors: [
     {
       code: 6000;
-      name: 'InsufficientBalance';
+      name: 'insufficientBalance';
       msg: 'Insufficient Balance';
     },
     {
       code: 6001;
-      name: 'InvalidBidder';
+      name: 'invalidBidder';
       msg: 'Invalid Bidder';
     },
     {
       code: 6002;
-      name: 'InvalidAmount';
+      name: 'invalidAmount';
       msg: 'Invalid Amount';
     },
     {
       code: 6003;
-      name: 'InvalidCategoryName';
+      name: 'invalidCategoryName';
       msg: 'Invalid Category Name';
     },
     {
       code: 6004;
-      name: 'Unauthorized';
-      msg: 'Unauthorized';
+      name: 'unauthorized';
+      msg: 'unauthorized';
     },
   ];
   types: [
     {
-      name: 'Bid';
+      name: 'bid';
       type: {
         kind: 'struct';
         fields: [
@@ -432,7 +432,7 @@ export type BidToFeatureSmartContract = {
       };
     },
     {
-      name: 'BidderAccount';
+      name: 'bidderAccount';
       type: {
         kind: 'struct';
         fields: [
@@ -448,7 +448,7 @@ export type BidToFeatureSmartContract = {
       };
     },
     {
-      name: 'EscrowAccount';
+      name: 'escrowAccount';
       type: {
         kind: 'struct';
         fields: [
@@ -461,14 +461,14 @@ export type BidToFeatureSmartContract = {
             type: 'u64';
           },
           {
-            name: 'is_active';
+            name: 'isActive';
             type: 'bool';
           },
         ];
       };
     },
     {
-      name: 'FeaturedCategory';
+      name: 'featuredCategory';
       type: {
         kind: 'struct';
         fields: [
@@ -481,11 +481,11 @@ export type BidToFeatureSmartContract = {
             type: 'string';
           },
           {
-            name: 'top_3_bids';
+            name: 'top3Bids';
             type: {
               vec: {
                 defined: {
-                  name: 'Bid';
+                  name: 'bid';
                 };
               };
             };

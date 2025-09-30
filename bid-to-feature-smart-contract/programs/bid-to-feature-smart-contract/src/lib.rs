@@ -3,7 +3,6 @@ use anchor_lang::prelude::*;
 
 declare_id!("2EjhzjMZGBKJsEPDAqYALCcsWn12knJGydCso1YpAGBf");
 
-#[allow(deprecated)]
 #[program]
 pub mod bid_to_feature_smart_contract {
     use super::*;
@@ -39,7 +38,6 @@ pub mod bid_to_feature_smart_contract {
             CustomError::InvalidCategoryName
         );
 
-        // Perform CPI transfer first to avoid borrow conflict
         let cpi_ctx = CpiContext::new(
             ctx.accounts.system_program.to_account_info(),
             anchor_lang::system_program::Transfer {
@@ -49,7 +47,6 @@ pub mod bid_to_feature_smart_contract {
         );
         anchor_lang::system_program::transfer(cpi_ctx, amount)?;
 
-        // Now take mutable reference to bidder_account
         let bidder_account = &mut ctx.accounts.bidder_account;
         let category = &mut ctx.accounts.featured_category;
 
@@ -205,11 +202,11 @@ pub struct FeaturedCategory {
 impl FeaturedCategory {
     const MAX_NAME_LEN: usize = 50;
     const MAX_BIDS: usize = 3;
-    const BID_SIZE: usize = 32 + 4 + Self::MAX_NAME_LEN + 8; 
+    const BID_SIZE: usize = 32 + 4 + Self::MAX_NAME_LEN + 8;
     pub const SPACE: usize = 8 +
-        32 + 
-        4 + Self::MAX_NAME_LEN + 
-        4 + (Self::MAX_BIDS * Self::BID_SIZE); 
+        32 +
+        4 + Self::MAX_NAME_LEN +
+        4 + (Self::MAX_BIDS * Self::BID_SIZE);
 }
 
 #[account]
@@ -259,7 +256,7 @@ pub struct CloseBid<'info> {
 }
 
 #[derive(Accounts)]
-#[instruction(category_name: String)]
+#[instruction(amount: u64)]
 pub struct Withdraw<'info> {
     #[account(mut)]
     pub bidder: Signer<'info>,
