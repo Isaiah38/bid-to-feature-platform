@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/bid_to_feature_smart_contract.json`.
  */
 export type BidToFeatureSmartContract = {
-  address: '2EjhzjMZGBKJsEPDAqYALCcsWn12knJGydCso1YpAGBf';
+  address: 'AbLQfsirLQvvXw71d6HiKYzrzF7TBDj6gQgU8bKVmaBH';
   metadata: {
     name: 'bidToFeatureSmartContract';
     version: '0.1.0';
