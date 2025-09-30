@@ -53,12 +53,12 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   if (timeLeft.status === "pending") {
     return (
-      <div className="text-gray-500 font-semibold">Auction not started yet</div>
+      <div className="text-gray-500 font-semibold">Bidding not started yet</div>
     );
   }
 
   if (timeLeft.status === "completed") {
-    return <div className="text-red-600 font-semibold">Auction ended</div>;
+    return <div className="text-red-600 font-semibold">Bidding ended</div>;
   }
 
   return (

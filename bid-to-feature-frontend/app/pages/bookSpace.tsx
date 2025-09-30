@@ -28,8 +28,8 @@ export default function BookSpacePage() {
   const resetFormData = () => {
     setFormData(initialFormData);
   };
-  const startDate = new Date("2025-09-18T17:40:25.370Z");
-  const endDate = new Date("2025-09-19T17:40:25.370Z");
+  const startDate = new Date("2025-09-30T17:40:25.370Z");
+  const endDate = new Date("2025-10-01T17:40:25.370Z");
   // const endDate = new Date();
   // endDate.setDate(endDate.getDate() + 1);
   const [show, setShow] = useState<boolean>(false);
